@@ -1,0 +1,8 @@
+torch>=2.0
+torchvision>=0.15
+datasets>=2.14
+matplotlib>=3.7
+pyyaml>=6.0
+# Optional
+# wandb>=0.16
+# pytest>=7.0

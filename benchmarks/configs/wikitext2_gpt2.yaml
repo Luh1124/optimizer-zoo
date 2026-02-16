@@ -1,0 +1,9 @@
+# WikiText-2 + GPT-2 Small: Language modeling benchmark (~20 min)
+# Most realistic benchmark for Muon/SOAP.
+# Requires: pip install datasets transformers
+model: gpt2_small
+dataset: wikitext2
+batch_size: 32
+epochs: 5
+lr: 3e-4
+weight_decay: 0.01

@@ -1,0 +1,7 @@
+# CIFAR-10 + ResNet-18: Standard CNN benchmark (~5 min)
+model: resnet18
+dataset: cifar10
+batch_size: 128
+epochs: 50
+lr: 1e-3
+weight_decay: 0.01

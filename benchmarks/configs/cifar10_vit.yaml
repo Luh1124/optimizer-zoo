@@ -1,0 +1,8 @@
+# CIFAR-10 + ViT-Tiny: Transformer benchmark (~10 min)
+# Muon and SOAP should show advantages here.
+model: vit_tiny
+dataset: cifar10
+batch_size: 128
+epochs: 100
+lr: 1e-3
+weight_decay: 0.05
