@@ -32,20 +32,12 @@ in_ch = 1
 hidden_ch = 8
 out_ch = 1
 
-''' 
-1e-2 is nicer for 1e-4, 1e-3 
-m_hat ≈ mean of the gradients (same scale as grad)
-sqrt(v_hat) ≈ standard deviation of the gradients (also same scale as grad)
-Their ratio ≈ signal-to-noise ratio, typically between -1 and +1
-Therefore, the effective step size in Adam is approximately equal to lr, and is largely independent of the absolute gradient magnitude.
-While SGD updates are proportional to the gradient magnitude, Adam's effective step size is constant.
-'''
 lr = 1e-2 
 beta1 = 0.9
 beta2 = 0.999
 epsilon = 1e-8
-adam_type = "adamw" # adam adaml2 adamw
-weight_decay = 0.01  # need by adamw and adaml2
+adam_type = "lion"
+weight_decay = 0.01
 
 # He initialization (shared by both implementations)
 w1_init = np.random.randn(in_ch, hidden_ch).astype(np.float32) * np.sqrt(2.0 / in_ch)
@@ -59,7 +51,7 @@ b3_init = np.zeros((1, out_ch), dtype=np.float32)
 shuffle_indices = np.array([np.random.permutation(200) for _ in range(epochs)])
 
 # ═══════════════════════════════════════════════════════════════════════
-# Part 1: Numpy (hand-written forward + backward + Adam)
+# Part 1: Numpy (hand-written forward + backward + Lion)
 # ═══════════════════════════════════════════════════════════════════════
 
 # Copy init so the two runs don't share mutable state
@@ -132,7 +124,7 @@ def np_backward(y_pred, y_true, cache):
 
     return dw1, db1, dw2, db2, dw3, db3
 
-def adam_update(params, grads, state, lr, beta1, beta2, epsilon, weight_decay=0.0, adam_type="adam"):
+def lion_update(params, grads, state, lr, beta1, beta2, epsilon, weight_decay=0.0):
     """Adam optimizer: adaptive learning rate via first & second moment estimates.
 
     state dict holds:
@@ -202,7 +194,7 @@ for epoch in range(epochs):
 
 
 # ═══════════════════════════════════════════════════════════════════════
-# Part 2: PyTorch (autograd + torch.optim.Adam or torch.optim.AdamW)
+# Part 2: PyTorch (autograd + torch.optim.SGD)
 # ═══════════════════════════════════════════════════════════════════════
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
